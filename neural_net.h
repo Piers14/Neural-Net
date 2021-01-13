@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <cmath>
+#include <cassert>
 #include "matrix.h"
 #include "activation_function.h"
 #include "NormalGenerator.hpp"
@@ -11,11 +12,12 @@ private:
 	activation_function& a_fn;
 	double learn_rate;
 
+	int num_layers;
 	std::vector<matrix<double>> weights;
 	std::vector<matrix<double>> bias;
 	std::vector<matrix<double>> errors;
 	std::vector<matrix<double>> activations;
-	std::vector<matrix<double>> inputs;
+	std::vector<matrix<double>> pre_activations;
 
 	
 
@@ -25,7 +27,7 @@ public:
 
 	void init();
 
-	void feed_forward(std::vector<double> input);
+	matrix<double> feed_forward(std::vector<double> input);
 	void back_prop(std::vector<double> output);
 
 	void train(matrix<double> x, std::vector<double> y);

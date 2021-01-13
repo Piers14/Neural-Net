@@ -6,6 +6,8 @@
 template<typename T>
 matrix<T>::matrix()
 {
+    cols = 0;
+    rows = 0;
 }
 
 // Parameter Constructor                                                                                                                                                      
