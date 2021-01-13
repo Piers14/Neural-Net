@@ -7,3 +7,14 @@
 *.vcxproj
 *.filters
 *.user
+.vs/Neural-Net/v16/.suo
+*.ipch
+*.obj
+*.exe
+*.recipe
+*.ilk
+*.log
+*.pdb
+*.tlog
+Debug/Neural-Net.vcxproj.FileListAbsolute.txt
+Debug/vc142.idb
