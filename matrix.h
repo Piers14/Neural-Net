@@ -19,6 +19,8 @@ public:
 	matrix(const matrix<T>& rhs);
 	virtual ~matrix();
 
+	void resize(unsigned new_rows, unsigned new_cols);
+
 	// Overloading insertion operator
 	template<typename T>
 	friend std::ostream& operator<<(std::ostream& output, const matrix<T>& rhs);

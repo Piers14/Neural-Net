@@ -50,6 +50,17 @@ matrix<T>::matrix(const matrix<T>& rhs) {
 template<typename T>
 matrix<T>::~matrix() {}
 
+template<typename T>
+void matrix<T>::resize(unsigned new_rows, unsigned new_cols)
+{
+    mat.resize(new_rows);
+    for (unsigned i = 0; i < mat.size(); i++) {
+        mat[i].resize(new_cols);
+    }
+    rows = new_rows;
+    cols = new_cols;
+}
+
 // Assignment Operator                                                                                                                                                        
 template<typename T>
 matrix<T>& matrix<T>::operator=(const matrix<T>& rhs) {
