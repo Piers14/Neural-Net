@@ -189,6 +189,20 @@ matrix<T>& matrix<T>::operator*=(const matrix<T>& rhs) {
     return *this;
 }
 
+template<typename T>
+matrix<T> matrix<T>::operator% (const matrix<T>& rhs)
+{
+    matrix result(rows, cols, 0);
+    for (unsigned i = 0; i < rows; i++)
+    {
+        for (unsigned j = 0; j < cols; j++)
+        {
+            result(i, j) = this->mat[i][j] * rhs(i, j);
+        }
+    }
+    return result;
+}
+
 // Calculate a transpose of this matrix                                                                                                                                       
 template<typename T>
 matrix<T> matrix<T>::transpose() {

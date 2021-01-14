@@ -35,6 +35,7 @@ public:
 	matrix<T>& operator-=(const matrix<T>& rhs);
 	matrix<T> operator*(const matrix<T>& rhs);
 	matrix<T>& operator*=(const matrix<T>& rhs);
+	matrix<T> operator% (const matrix<T>& rhs); // Hadamard product
 	matrix<T> transpose();
 
 	// Matrix/scalar operations                                                                                                                                                                                                     
@@ -42,6 +43,7 @@ public:
 	matrix<T> operator-(const T& rhs);
 	matrix<T> operator*(const T& rhs);
 	matrix<T> operator/(const T& rhs);
+	
 
 	// Matrix/vector operations                                                                                                                                                                                                     
 	std::vector<T> operator*(const std::vector<T>& rhs);
