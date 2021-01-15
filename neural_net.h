@@ -21,6 +21,7 @@ private:
 	std::vector<matrix<double>> errors;
 	std::vector<matrix<double>> activations;
 	std::vector<matrix<double>> pre_activations;
+	matrix<double> current_input;
 
 	
 
@@ -33,9 +34,9 @@ public:
 	matrix<double> feed_forward(std::vector<double> input);
 	std::vector<matrix<double>> compute_deltas(matrix<double> true_value);
 	void update_weights();
-	void back_prop(std::vector<double> output);
+	void back_prop(matrix<double> true_value);
 
-	void train(matrix<double> x, std::vector<double> y);
+	void train(std::vector<std::vector<double>> x, std::vector<matrix<double>> y, int epochs);
 
 	// Testers:
 	double test_act(double x) { return a_fn.compute(x); }
