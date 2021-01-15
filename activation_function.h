@@ -13,11 +13,18 @@ public:
 
 class relu : public activation_function
 {
+private:
+	double leaky_param;
 public:
-	relu();
+	relu(double param = 0);
 
 	double compute(double x) {
-		return std::max(x, 0.0);
+		if (x > 0) {
+			return x;
+		}
+		else {
+			return leaky_param * x;
+		}
 	}
 
 	double compute_derivative(double x) {
@@ -25,7 +32,7 @@ public:
 			return 1.0;
 		}
 		else {
-			return 0.0;
+			return leaky_param;
 		}
 	}
 

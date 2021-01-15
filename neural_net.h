@@ -29,7 +29,7 @@ public:
 	neural_net(std::vector<int> structure, activation_function& other_fn, loss_function& other_loss, double other_learn_rate);
 	neural_net(neural_net& other_nn);
 
-	void init();
+	void init(int seed = 1);
 
 	matrix<double> feed_forward(std::vector<double> input);
 	std::vector<matrix<double>> compute_deltas(matrix<double> true_value);

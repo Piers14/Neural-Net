@@ -1,5 +1,6 @@
 #include "activation_function.h"
 
-relu::relu()
+relu::relu(double param)
 {
+	leaky_param = param;
 }
