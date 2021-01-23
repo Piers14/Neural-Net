@@ -31,7 +31,11 @@ public:
 
 	void init(int seed = 1);
 
+	// Feeds a single input through the nnet and outputs the prediction
 	matrix<double> feed_forward(std::vector<double> input);
+	// Feeds a mini-batch through the nnet and outputs the predictions
+	matrix<double> feed_batch(matrix<double> input);
+
 	std::vector<matrix<double>> compute_deltas(matrix<double> true_value);
 	void update_weights();
 	void back_prop(matrix<double> true_value);

@@ -64,6 +64,14 @@ matrix<double> neural_net::feed_forward(std::vector<double> input)
 	return activations[num_layers - 2];
 }
 
+matrix<double> neural_net::feed_batch(matrix<double> input)
+{
+	// Data should be pre-transposed before passed to this function
+	int batch_size = input.get_cols();
+
+	return matrix<double>();
+}
+
 std::vector<matrix<double>> neural_net::compute_deltas(matrix<double> true_value)
 {
 	std::vector<matrix<double>> deltas = errors;
