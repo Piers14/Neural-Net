@@ -206,7 +206,8 @@ matrix<T> matrix<T>::operator% (const matrix<T>& rhs)
 // Calculate a transpose of this matrix                                                                                                                                       
 template<typename T>
 matrix<T> matrix<T>::transpose() {
-    matrix result(cols, rows, 0.0);
+    matrix result;
+    result.resize(cols, rows);
 
     for (unsigned i = 0; i < cols; i++) {
         for (unsigned j = 0; j < rows; j++) {
@@ -315,13 +316,32 @@ const T& matrix<T>::operator()(const unsigned& row, const unsigned& col) const {
 template<typename T>
 matrix<T> matrix<T>::sub_rows(std::vector<int> row_inds)
 {
-    return matrix<T>();
+    matrix<T> result;
+    result.resize(row_inds.size(), cols);
+    for (unsigned i = 0; i < row_inds.size(); i++)
+    {
+        assert(row_inds[i] < rows);
+        for (unsigned j = 0; j < cols; j++)
+        {
+            result.mat[i][j] = this->mat[row_inds[i]][j];
+        }
+    }
+    return result;
 }
 
 template<typename T>
 matrix<T> matrix<T>::sub_cols(std::vector<int> col_inds)
 {
-    return matrix<T>();
+    matrix<T> result;
+    result.resize(rows, col_inds.size());
+    for (unsigned i = 0; i < rows; i++) {
+        for (unsigned j = 0; j < col_inds.size(); j++)
+        {
+            assert(col_inds[j] < cols);
+            result.mat[i][j] = this->mat[i][col_inds[j]];
+        }
+    }
+    return result;
 }
 
 // Get the number of rows of the matrix                                                                                                                                       
