@@ -3,6 +3,7 @@
 data_loader::data_loader(std::string _file_path, int _batch_size, double _valid_pct)
     : file_path(_file_path), batch_size(_batch_size), valid_pct(_valid_pct)
 {
+
 }
 
 data_loader::data_loader(matrix<double> _data, int _batch_size, double _valid_pct)
@@ -12,7 +13,7 @@ data_loader::data_loader(matrix<double> _data, int _batch_size, double _valid_pc
     train_data = _data; // change
 }
 
-std::pair<std::vector<std::string>, matrix<double>> data_loader::read_csv(std::string file_path)
+std::pair<std::vector<std::string>, matrix<double>> data_loader::read_csv()
 {
     // Column names and data matrix
     std::vector<std::string> col_names;
@@ -26,7 +27,7 @@ std::pair<std::vector<std::string>, matrix<double>> data_loader::read_csv(std::s
 
     // Helper vars
     std::string line, colname;
-    int val;
+    double val;
 
     // Read the column names
     if (my_file.good())
@@ -70,7 +71,6 @@ std::pair<std::vector<std::string>, matrix<double>> data_loader::read_csv(std::s
         }
         row_indx++;
     }
-
     // Close file
     my_file.close();
 

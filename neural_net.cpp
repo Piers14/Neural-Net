@@ -32,7 +32,7 @@ void neural_net::init(int seed)
 		_errors[i].resize(structure[i + 1], 1);
 
 		
-		NormalGenerator random_normal(seed + i, 0, 1.0 / sqrt(structure[i + 1]));
+		NormalGenerator random_normal(seed + i, 0, 1.0 / (structure[i]));
 		for (unsigned j = 0; j < _weights[i].get_rows(); j++)
 		{
 			for (unsigned k = 0; k < _weights[i].get_cols(); k++)
@@ -121,6 +121,6 @@ void neural_net::train(std::vector<std::vector<double>> x, std::vector<matrix<do
 			feed_forward(x[j]);
 			back_prop(y[j]);
 		}
-		learn_rate *= 0.995;
+		learn_rate *= 1.0;
 	}
 }

@@ -53,6 +53,10 @@ public:
 	T& operator()(const unsigned& row, const unsigned& col);
 	const T& operator()(const unsigned& row, const unsigned& col) const;
 
+	// Returns sub-matrices
+	matrix<T> sub_rows(std::vector<int> row_inds);
+	matrix<T> sub_cols(std::vector<int> col_inds);
+
 	// Access the row and column sizes                                                                                                                                                                                              
 	unsigned get_rows() const;
 	unsigned get_cols() const;

@@ -312,6 +312,18 @@ const T& matrix<T>::operator()(const unsigned& row, const unsigned& col) const {
     return this->mat[row][col];
 }
 
+template<typename T>
+matrix<T> matrix<T>::sub_rows(std::vector<int> row_inds)
+{
+    return matrix<T>();
+}
+
+template<typename T>
+matrix<T> matrix<T>::sub_cols(std::vector<int> col_inds)
+{
+    return matrix<T>();
+}
+
 // Get the number of rows of the matrix                                                                                                                                       
 template<typename T>
 unsigned matrix<T>::get_rows() const {
