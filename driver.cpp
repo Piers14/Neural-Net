@@ -6,15 +6,9 @@
 
 int main(int argc, char* argv[])
 {
-	// Read in csv example
-	std::vector<int> test_vec = { 0, 2 };
-	data_loader test_loader("test.csv");
-	std::pair<std::vector<std::string>, matrix<double>> test_data = test_loader.read_csv();
-	std::cout << test_data.second << std::endl;
-	matrix<double> test_sub_matrix = test_data.second.sub_rows({0, 2});
-	std::cout << test_sub_matrix << std::endl;
-	matrix<double> test_sub_matrix2 = test_data.second.sub_cols({ 0, 2 });
-	std::cout << test_sub_matrix2 << std::endl;
+	// Data loader
+	data_loader test_load("test.csv", 16, 0.33);
+	std::cout << std::endl;
 
 	// EXAMPLE
 
