@@ -12,7 +12,7 @@ int main(int argc, char* argv[])
 	// Quadratic loss function
 	quadratic_loss test_quad;
 	// Structure: 3 input, 1 output, no hidden layers
-	std::vector<int> test_structure = { 3, 1 };
+	std::vector<int> test_structure = { 3, 1, 1 };
 
 	// Define and initialise the neural network
 	neural_net test_nn(test_structure, test_relu, test_quad, 0.2);
@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
 
 
 	// Train network
-	test_nn.train(train_x, train_y, 1000);
+	test_nn.train(train_x, train_y, 10);
 	
 	// Outputs predicted values
 	std::cout << test_nn.feed_forward(test_input1) << test_nn.feed_forward(test_input2) << 

@@ -19,3 +19,4 @@
 Debug/Neural-Net.vcxproj.FileListAbsolute.txt
 Debug/vc142.idb
 *.enc
+*.csv
