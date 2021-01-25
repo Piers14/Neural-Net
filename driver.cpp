@@ -7,11 +7,14 @@
 int main(int argc, char* argv[])
 {
 	// Data loader
-	data_loader test_load("test.csv", 16, 0.33);
-	std::cout << std::endl;
+	data_loader test_load("test.csv", 6, 0.0);
+	std::cout << std::endl << std::endl;
+	test_load.get_train_x();
+	test_load.get_batch_inds();
+	std::cout << test_load.get_batch_x() << std::endl << std::endl;
 
 	// EXAMPLE
-
+	/*
 	// Leaky ReLu activation function
 	relu test_relu(0.1);
 	// Quadratic loss function
@@ -35,19 +38,7 @@ int main(int argc, char* argv[])
 	matrix<double> test_output3(1, 1, 0.33);
 	matrix<double> test_output4(1, 1, 0.7);
 	std::vector<matrix<double>> train_y = { test_output1, test_output2, test_output3, test_output4};
-
-	/*
-	test_nn.test_weights();
-	std::cout << std::endl;
-	std::cout << test_nn.feed_forward(test_input1) << std::endl;
-	for (int i = 0; i < 10; i++)
-	{
-		test_nn.back_prop(test_output1);
-		test_nn.test_weights();
-		std::cout << std::endl;
-		std::cout << "Prediction: " << test_nn.feed_forward(test_input1) << std::endl;
-	}
-	*/
+	
 
 	
 	// Train network
@@ -56,6 +47,6 @@ int main(int argc, char* argv[])
 	// Outputs predicted values
 	std::cout << test_nn.feed_forward(test_input1) << test_nn.feed_forward(test_input2) << 
 		test_nn.feed_forward(test_input3) << test_nn.feed_forward(test_input4);
-	
+	*/
 	return 0;
 }

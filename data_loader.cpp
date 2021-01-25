@@ -11,6 +11,11 @@ data_loader::data_loader(std::string _file_path, int _batch_size, double _valid_
     num_vars = all_data.second.get_cols() - 1;
     num_train = floor(num_obs * (1 - valid_pct));
     num_val = num_obs - num_train;
+    num_batches = num_train / batch_size;
+    final_batch_size = num_train % batch_size;
+
+    assert(_batch_size <= num_train);
+
 
     // Random shuffle to get indicies for train and validation sets
     std::vector<int> inds(num_obs);
@@ -45,6 +50,17 @@ data_loader::data_loader(std::string _file_path, int _batch_size, double _valid_
     train_y = all_data.second.sub_rows(train_inds).sub_cols({ num_vars });
     val_x = all_data.second.sub_rows(val_inds).sub_cols(x_inds);
     val_y = all_data.second.sub_rows(val_inds).sub_cols({ num_vars });
+
+    // Allocating storage for indices of mini batches
+    batch_inds.resize(num_batches + 1);
+    for (unsigned i = 0; i < num_batches; i++)
+    {
+        batch_inds[i].resize(batch_size);
+    }
+    batch_inds[num_batches].resize(final_batch_size);
+
+    // Randomly initialises batch indices
+    update_batch_inds();
 }
 
 
@@ -113,4 +129,64 @@ std::pair<std::vector<std::string>, matrix<double>> data_loader::read_csv()
     matrix<double> data_mat(row_indx, col_indx, data_vec);
     std::pair<std::vector<std::string>, matrix<double>> result(col_names, data_mat);
     return result;
+}
+
+void data_loader::update_batch_inds()
+{
+    current_batch_ctr = 0;
+    std::vector<int> all_inds(num_train);
+    for (int i = 0; i < num_train; i++)
+    {
+        all_inds[i] = i;
+    }
+    std::random_shuffle(all_inds.begin(), all_inds.end());
+    int k = 0;
+    for (int i = 0; i < num_batches; i++)
+    {
+        for (int j = 0; j < batch_size; j++)
+        {
+            batch_inds[i][j] = all_inds[k];
+            k++;
+        }
+    }
+
+    // If remaining observations, make another smaller batch
+    if (final_batch_size)
+    {
+        for (int j = 0; j < final_batch_size; j++)
+        {
+            batch_inds[num_batches][j] = all_inds[k];
+            k++;
+        }
+    }
+}
+
+matrix<double> data_loader::get_batch_x()
+{
+    
+    if (!final_batch_size && current_batch_ctr == num_batches)
+    {
+        update_batch_inds();
+        matrix<double> output = train_x.sub_rows(batch_inds[current_batch_ctr]);
+        current_batch_ctr++;
+        return output;
+    }
+    
+    // If final batch is different size
+    if (final_batch_size)
+    {
+        if (current_batch_ctr == num_batches + 1)
+        {
+            update_batch_inds();
+            matrix<double> output = train_x.sub_rows(batch_inds[current_batch_ctr]);
+            current_batch_ctr++;
+            return output;
+        }
+        
+    }
+    
+    matrix<double> output = train_x.sub_rows(batch_inds[current_batch_ctr]);
+    current_batch_ctr++;
+    return output;
+
 }
