@@ -6,6 +6,10 @@ int random_row(int num_rows)
     return std::rand() % num_rows;
 }
 
+data_loader::data_loader()
+{
+}
+
 data_loader::data_loader(std::string _file_path, int _batch_size, double _valid_pct)
     : file_path(_file_path), batch_size(_batch_size), valid_pct(_valid_pct)
 {
@@ -67,6 +71,30 @@ data_loader::data_loader(std::string _file_path, int _batch_size, double _valid_
 
     // Randomly initialises batch indices
     update_batch_inds();
+}
+
+data_loader::data_loader(data_loader& other_dl)
+{
+    batch_size = other_dl.batch_size;
+    valid_pct = other_dl.valid_pct;
+    train_x = other_dl.train_x;
+    train_y = other_dl.train_y;
+    val_x = other_dl.val_x;
+    val_y = other_dl.val_y;
+    var_names = other_dl.var_names;
+
+    num_vars = other_dl.num_vars;
+    num_obs = other_dl.num_obs;
+    num_train = other_dl.num_train;
+    num_val = other_dl.num_val;
+    num_batches = other_dl.num_batches;
+    final_batch_size = other_dl.final_batch_size;
+
+    current_batch_ctr = other_dl.current_batch_ctr;
+
+    batch_inds = other_dl.batch_inds;
+
+    file_path = other_dl.file_path;
 }
 
 

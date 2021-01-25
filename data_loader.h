@@ -36,16 +36,20 @@ private:
 
 	std::string file_path;
 
-	
-
 
 public:
+	// Constructors
+	data_loader();
 	data_loader(std::string _file_path, int _batch_size = 16, double _valid_pct = 0.2);
+	data_loader(data_loader& other_dl);
 
+	// Reads in the csv from the file path
 	std::pair<std::vector<std::string>, matrix<double>> read_csv();
 
+	// After a full epoch, updates the new mini-batches
 	void update_batch_inds();
 
+	// Returns the next mini-batch as a pair of the x and y values
 	std::pair <matrix<double>, matrix<double>> get_batch();
 
 	void show_batch();
