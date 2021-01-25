@@ -6,6 +6,7 @@
 #include "activation_function.h"
 #include "NormalGenerator.hpp"
 #include "loss_function.h"
+#include "data_loader.h"
 
 class neural_net
 {

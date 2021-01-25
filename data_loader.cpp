@@ -1,5 +1,11 @@
 #include "data_loader.h"
 
+// Used to random row selection
+int random_row(int num_rows)
+{
+    return std::rand() % num_rows;
+}
+
 data_loader::data_loader(std::string _file_path, int _batch_size, double _valid_pct)
     : file_path(_file_path), batch_size(_batch_size), valid_pct(_valid_pct)
 {
@@ -139,7 +145,7 @@ void data_loader::update_batch_inds()
     {
         all_inds[i] = i;
     }
-    std::random_shuffle(all_inds.begin(), all_inds.end());
+    std::random_shuffle(all_inds.begin(), all_inds.end(), random_row);
     int k = 0;
     for (int i = 0; i < num_batches; i++)
     {
@@ -161,32 +167,35 @@ void data_loader::update_batch_inds()
     }
 }
 
-matrix<double> data_loader::get_batch_x()
+std::pair<matrix<double>, matrix<double>> data_loader::get_batch()
 {
     
-    if (!final_batch_size && current_batch_ctr == num_batches)
+    if (!final_batch_size && current_batch_ctr == num_batches - 1)
     {
+        matrix<double> output_x = train_x.sub_rows(batch_inds[current_batch_ctr]);
+        matrix<double> output_y = train_y.sub_rows(batch_inds[current_batch_ctr]);
         update_batch_inds();
-        matrix<double> output = train_x.sub_rows(batch_inds[current_batch_ctr]);
-        current_batch_ctr++;
-        return output;
+        return std::pair<matrix<double>, matrix<double>>(output_x, output_y);
     }
     
     // If final batch is different size
     if (final_batch_size)
     {
-        if (current_batch_ctr == num_batches + 1)
+        if (current_batch_ctr == num_batches)
         {
+            matrix<double> output_x = train_x.sub_rows(batch_inds[current_batch_ctr]);
+            matrix<double> output_y = train_y.sub_rows(batch_inds[current_batch_ctr]);
             update_batch_inds();
-            matrix<double> output = train_x.sub_rows(batch_inds[current_batch_ctr]);
-            current_batch_ctr++;
-            return output;
+            return std::pair<matrix<double>, matrix<double>>(output_x, output_y);
         }
         
     }
     
-    matrix<double> output = train_x.sub_rows(batch_inds[current_batch_ctr]);
+    matrix<double> output_x = train_x.sub_rows(batch_inds[current_batch_ctr]);
+    matrix<double> output_y = train_y.sub_rows(batch_inds[current_batch_ctr]);
     current_batch_ctr++;
-    return output;
+    return std::pair<matrix<double>, matrix<double>>(output_x, output_y);
+
 
 }
+

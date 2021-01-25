@@ -9,6 +9,8 @@
 #include <sstream> // std::stringstream
 #include <algorithm> // std::random_shuffle
 #include <cmath> // floor
+#include <cstdlib> // std::rand
+
 class data_loader
 {
 private:
@@ -34,6 +36,8 @@ private:
 
 	std::string file_path;
 
+	
+
 
 public:
 	data_loader(std::string _file_path, int _batch_size = 16, double _valid_pct = 0.2);
@@ -42,34 +46,14 @@ public:
 
 	void update_batch_inds();
 
-	matrix<double> get_batch_x();
-
-	matrix<double> get_batch_y();
+	std::pair <matrix<double>, matrix<double>> get_batch();
 
 	void show_batch();
 	
-
-
 	void set_batch_size(int _batch_size);
 
 	int get_batch_size();
+
 	int get_train_size();
-
-
-
-	// Testers
-	void get_batch_inds()
-	{
-		for (int j = 0; j < batch_size; j++)
-		{
-			std::cout << batch_inds[current_batch_ctr][j] << " ";
-		}
-		std::cout << std::endl;
-	}
-
-	void get_train_x()
-	{
-		std::cout << train_x << std::endl;
-	}
 };
 

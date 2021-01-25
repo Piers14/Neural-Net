@@ -7,11 +7,10 @@
 int main(int argc, char* argv[])
 {
 	// Data loader
-	data_loader test_load("test.csv", 6, 0.0);
+	data_loader test_load("test.csv", 5, 0.0);
 	std::cout << std::endl << std::endl;
-	test_load.get_train_x();
-	test_load.get_batch_inds();
-	std::cout << test_load.get_batch_x() << std::endl << std::endl;
+
+
 
 	// EXAMPLE
 	/*
