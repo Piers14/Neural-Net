@@ -59,5 +59,7 @@ public:
 	int get_batch_size();
 
 	int get_train_size();
+
+	friend class neural_net;
 };
 

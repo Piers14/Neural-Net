@@ -24,13 +24,13 @@ private:
 	std::vector<matrix<double>> pre_activations;
 	matrix<double> current_input;
 
-	
+	data_loader* data;
 
 public:
 	neural_net(std::vector<int> structure, activation_function& other_fn, loss_function& other_loss, double other_learn_rate);
 	neural_net(neural_net& other_nn);
 
-	void init(int seed = 1);
+	void init(data_loader& _data, int seed = 1);
 
 	// Feeds a single input through the nnet and outputs the prediction
 	matrix<double> feed_forward(std::vector<double> input);
@@ -41,7 +41,7 @@ public:
 	void update_weights();
 	void back_prop(matrix<double> true_value);
 
-	void train(std::vector<std::vector<double>> x, std::vector<matrix<double>> y, int epochs);
+	void train(data_loader data, int epochs);
 
 	// Testers:
 	double test_act(double x) { return a_fn.compute(x); }

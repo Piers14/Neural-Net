@@ -4,15 +4,18 @@ neural_net::neural_net(std::vector<int> other_structure, activation_function& ot
 	: structure(other_structure), a_fn(other_fn), learn_rate(other_learn_rate), loss_fn(other_loss)
 {
 	num_layers = 0;
+	data = NULL;
 }
 
 neural_net::neural_net(neural_net& other_nn)
-	: structure(other_nn.structure), a_fn(other_nn.a_fn), learn_rate(other_nn.learn_rate), num_layers(other_nn.num_layers), loss_fn(other_nn.loss_fn)
+	: structure(other_nn.structure), a_fn(other_nn.a_fn), learn_rate(other_nn.learn_rate), num_layers(other_nn.num_layers), loss_fn(other_nn.loss_fn), 
+	data(other_nn.data)
 {
 }
 
-void neural_net::init(int seed)
+void neural_net::init(data_loader& _data, int seed)
 {
+	data = &_data;
 	// Instatiates matrices
 	num_layers = structure.size();
 	assert(num_layers > 1);
@@ -112,8 +115,9 @@ void neural_net::back_prop(matrix<double> true_value)
 	update_weights();
 }
 
-void neural_net::train(std::vector<std::vector<double>> x, std::vector<matrix<double>> y, int epochs)
+void neural_net::train(data_loader data, int epochs)
 {
+	/*
 	for (int i = 0; i < epochs; i++)
 	{
 		for (unsigned j = 0; j < x.size(); j++)
@@ -123,4 +127,5 @@ void neural_net::train(std::vector<std::vector<double>> x, std::vector<matrix<do
 		}
 		learn_rate *= 1.0;
 	}
+	*/
 }
