@@ -227,3 +227,18 @@ std::pair<matrix<double>, matrix<double>> data_loader::get_batch()
 
 }
 
+void data_loader::show_batch()
+{
+    std::cout << train_x.sub_rows(batch_inds[current_batch_ctr]) << std::endl;
+}
+
+int data_loader::get_batch_size() const
+{
+    return batch_size;
+}
+
+int data_loader::get_train_size() const
+{
+    return num_train;
+}
+

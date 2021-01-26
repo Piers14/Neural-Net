@@ -18,10 +18,21 @@ private:
 
 	int num_layers;
 	std::vector<matrix<double>> weights;
+
 	std::vector<matrix<double>> bias;
 	std::vector<matrix<double>> errors;
 	std::vector<matrix<double>> activations;
 	std::vector<matrix<double>> pre_activations;
+
+	std::vector<matrix<double>> batch_bias;
+	std::vector<matrix<double>> batch_errors;
+	std::vector<matrix<double>> batch_activations;
+	std::vector<matrix<double>> batch_pre_activations;
+
+	std::vector<matrix<double>> final_batch_errors;
+	std::vector<matrix<double>> final_batch_activations;
+	std::vector<matrix<double>> final_batch_pre_activations;
+
 	matrix<double> current_input;
 
 	data_loader* data;

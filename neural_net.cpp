@@ -16,7 +16,7 @@ neural_net::neural_net(neural_net& other_nn)
 void neural_net::init(data_loader& _data, int seed)
 {
 	data = &_data;
-	// Instatiates matrices
+	// Instantiates matrices
 	num_layers = structure.size();
 	assert(num_layers > 1);
 	std::vector<matrix<double>> _weights(num_layers - 1);
@@ -25,6 +25,17 @@ void neural_net::init(data_loader& _data, int seed)
 	std::vector<matrix<double>> _activations(num_layers - 1);
 	std::vector<matrix<double>> _errors(num_layers - 1);
 
+	// Same but for mini-batches
+	std::vector<matrix<double>> _batch_bias(num_layers - 1);
+	std::vector<matrix<double>> _batch_pre_activations(num_layers - 1);
+	std::vector<matrix<double>> _batch_activations(num_layers - 1);
+	std::vector<matrix<double>> _batch_errors(num_layers - 1);
+
+	// Same but for final mini-batch
+	std::vector<matrix<double>> _final_batch_pre_activations(num_layers - 1);
+	std::vector<matrix<double>> _final_batch_activations(num_layers - 1);
+	std::vector<matrix<double>> _final_batch_errors(num_layers - 1);
+	
 
 	for (int i = 0; i < num_layers - 1; i++)
 	{
@@ -34,7 +45,20 @@ void neural_net::init(data_loader& _data, int seed)
 		_activations[i].resize(structure[i + 1], 1);
 		_errors[i].resize(structure[i + 1], 1);
 
+		_batch_bias[i].resize(structure[i + 1], data->get_batch_size());
+		_batch_pre_activations[i].resize(structure[i + 1], data->get_batch_size());
+		_batch_activations[i].resize(structure[i + 1], data->get_batch_size());
+		_batch_errors[i].resize(structure[i + 1], data->get_batch_size());
+
+		if (data->final_batch_size)
+		{
+			_final_batch_pre_activations[i].resize(structure[i + 1], data->final_batch_size);
+			_final_batch_activations[i].resize(structure[i + 1], data->final_batch_size);
+			_final_batch_errors[i].resize(structure[i + 1], data->final_batch_size);
+		}
 		
+
+		// Initialises weights
 		NormalGenerator random_normal(seed + i, 0, 1.0 / (structure[i]));
 		for (unsigned j = 0; j < _weights[i].get_rows(); j++)
 		{
@@ -49,6 +73,15 @@ void neural_net::init(data_loader& _data, int seed)
 	pre_activations = _pre_activations;
 	activations = _activations;
 	errors = _errors;
+
+	batch_bias = _batch_bias;
+	batch_pre_activations = _batch_pre_activations;
+	batch_activations = _batch_activations;
+	batch_errors = _batch_errors;
+
+	final_batch_pre_activations = _final_batch_pre_activations;
+	final_batch_activations = _final_batch_activations;
+	final_batch_errors = _final_batch_errors;
 }
 
 matrix<double> neural_net::feed_forward(std::vector<double> input)
@@ -67,12 +100,44 @@ matrix<double> neural_net::feed_forward(std::vector<double> input)
 	return activations[num_layers - 2];
 }
 
-matrix<double> neural_net::feed_batch(matrix<double> input)
+matrix<double> neural_net::feed_batch(matrix<double> input_batch)
 {
-	// Data should be pre-transposed before passed to this function
-	int batch_size = input.get_cols();
+	assert(input_batch.get_cols() == structure[0]);
 
-	return matrix<double>();
+	if (input_batch.get_rows() != data->get_batch_size())
+	{
+		// Case when smaller than ususal batch size
+		std::vector<int> final_bs_inds(data->final_batch_size);
+		for (int i = 0; i < final_bs_inds.size(); i++)
+		{
+			final_bs_inds[i] = i;
+		}
+
+		final_batch_pre_activations[0] = weights[0] * input_batch.transpose() + batch_bias[0].sub_cols(final_bs_inds);
+		final_batch_activations[0] = a_fn.compute(final_batch_pre_activations[0]);
+
+		for (int i = 1; i < num_layers - 1; i++)
+		{
+			final_batch_pre_activations[i] = weights[i] * final_batch_pre_activations[i - 1] + batch_bias[i].sub_cols(final_bs_inds);
+			final_batch_activations[i] = a_fn.compute(final_batch_pre_activations[i]);
+		}
+
+		return final_batch_activations[num_layers - 2];
+	}
+
+	// First layer
+	batch_pre_activations[0] = weights[0] * input_batch.transpose() + batch_bias[0];
+	batch_activations[0] = a_fn.compute(batch_pre_activations[0]);
+
+	
+	// Other layers
+	for (int i = 1; i < num_layers - 1; i++)
+	{
+		batch_pre_activations[i] = weights[i] * batch_pre_activations[i - 1] + batch_bias[i];
+		batch_activations[i] = a_fn.compute(batch_pre_activations[i]);
+	}
+	
+	return batch_activations[num_layers - 2];
 }
 
 std::vector<matrix<double>> neural_net::compute_deltas(matrix<double> true_value)

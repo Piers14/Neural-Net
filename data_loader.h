@@ -53,12 +53,10 @@ public:
 	std::pair <matrix<double>, matrix<double>> get_batch();
 
 	void show_batch();
-	
-	void set_batch_size(int _batch_size);
 
-	int get_batch_size();
+	int get_batch_size() const;
 
-	int get_train_size();
+	int get_train_size() const;
 
 	friend class neural_net;
 };
