@@ -48,11 +48,16 @@ public:
 	// Feeds a mini-batch through the nnet and outputs the predictions
 	matrix<double> feed_batch(matrix<double> input);
 
+	// Computes the "deltas" for a single observation
 	std::vector<matrix<double>> compute_deltas(matrix<double> true_value);
+
+	// Computes the "deltas" for a mini-batch
+	std::vector<matrix<double>> compute_batch_deltas(matrix<double> true_values);
+
 	void update_weights();
 	void back_prop(matrix<double> true_value);
 
-	void train(data_loader data, int epochs);
+	void train(int epochs);
 
 	// Testers:
 	double test_act(double x) { return a_fn.compute(x); }

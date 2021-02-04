@@ -162,6 +162,11 @@ std::vector<matrix<double>> neural_net::compute_deltas(matrix<double> true_value
 	
 }
 
+std::vector<matrix<double>> neural_net::compute_batch_deltas(matrix<double> true_values)
+{
+	return std::vector<matrix<double>>();
+}
+
 void neural_net::update_weights()
 {
 	bias[0] -= errors[0] * learn_rate;
@@ -180,8 +185,9 @@ void neural_net::back_prop(matrix<double> true_value)
 	update_weights();
 }
 
-void neural_net::train(data_loader data, int epochs)
+void neural_net::train(int epochs)
 {
+	// not yet defined
 	/*
 	for (int i = 0; i < epochs; i++)
 	{
