@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
 {
 	// Data loader
 	data_loader test_load("test.csv", 4, 0.0);
-	std::cout << test_load.get_batch().first << std::endl;
+	std::cout << "Example batch: " << std::endl;
 	test_load.show_batch();
 	std::cout << std::endl << std::endl;
 
@@ -20,19 +20,19 @@ int main(int argc, char* argv[])
 	relu test_relu(0.1);
 	// Quadratic loss function
 	quadratic_loss test_quad;
-	// Structure: 3 input, 1 output, two hidden layers with 20 neurons in each
+	// Structure: 3 input, 1 output
 	std::vector<int> test_structure = { 3, 1 };
 	// Define and initialise the neural network
 	neural_net test_nn(test_structure, test_relu, test_quad, 0.1);
-	
 	test_nn.init(test_load, 100);
 
-	test_nn.test_weights();
-	std::cout << std::endl;
-	matrix<double> batch_test = test_load.get_batch().first;
-	std::cout << batch_test << std::endl;
+	std::pair<matrix<double>, matrix<double>> batch_test = test_load.get_batch();
+	std::cout << test_nn.feed_batch(batch_test.first) << std::endl;
 
-	std::cout << test_nn.feed_batch(batch_test);
+	for (int i = 0; i < 1; i++)
+	{
+		std::cout << test_nn.compute_batch_deltas(batch_test.second)[i] << std::endl;
+	}
 
 	
 	

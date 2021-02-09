@@ -164,7 +164,25 @@ std::vector<matrix<double>> neural_net::compute_deltas(matrix<double> true_value
 
 std::vector<matrix<double>> neural_net::compute_batch_deltas(matrix<double> true_values)
 {
-	return std::vector<matrix<double>>();
+	std::vector<matrix<double>> batch_deltas = batch_errors;
+	std::cout << batch_activations[num_layers - 2] << std::endl;
+	std::cout << true_values.transpose() << std::endl;
+	batch_deltas[num_layers - 2] = (loss_fn.compute_derivative(batch_activations[num_layers - 2], true_values.transpose()) %
+		a_fn.compute_derivative(batch_pre_activations[num_layers - 2]));
+	if (num_layers == 2)
+	{
+		batch_errors = batch_deltas;
+		return batch_errors;
+	}
+	else
+	{
+		for (int i = num_layers - 3; i >= 0; i--)
+		{
+			batch_deltas[i] = (weights[i + 1].transpose() * batch_deltas[i + 1]) % a_fn.compute_derivative(batch_pre_activations[i]);
+		}
+		batch_errors = batch_deltas;
+		return batch_deltas;
+	}
 }
 
 void neural_net::update_weights()
