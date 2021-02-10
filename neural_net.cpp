@@ -84,12 +84,11 @@ void neural_net::init(data_loader& _data, int seed)
 	final_batch_errors = _final_batch_errors;
 }
 
-matrix<double> neural_net::feed_forward(std::vector<double> input)
+matrix<double> neural_net::feed_forward(matrix<double> input)
 {
-	assert(input.size() == structure[0]);
-	matrix<double> input_mat(input.size(), 1, input);
-	current_input = input_mat;
-	pre_activations[0] = weights[0] * input_mat + bias[0];
+	assert(input.get_cols() == structure[0]);
+	current_input = input.transpose();
+	pre_activations[0] = weights[0] * current_input + bias[0];
 	activations[0] = a_fn.compute(pre_activations[0]);
 	for (int i = 1; i < num_layers - 1; i++)
 	{
@@ -165,8 +164,6 @@ std::vector<matrix<double>> neural_net::compute_deltas(matrix<double> true_value
 std::vector<matrix<double>> neural_net::compute_batch_deltas(matrix<double> true_values)
 {
 	std::vector<matrix<double>> batch_deltas = batch_errors;
-	std::cout << batch_activations[num_layers - 2] << std::endl;
-	std::cout << true_values.transpose() << std::endl;
 	batch_deltas[num_layers - 2] = (loss_fn.compute_derivative(batch_activations[num_layers - 2], true_values.transpose()) %
 		a_fn.compute_derivative(batch_pre_activations[num_layers - 2]));
 	if (num_layers == 2)

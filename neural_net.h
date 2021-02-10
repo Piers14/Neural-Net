@@ -44,7 +44,7 @@ public:
 	void init(data_loader& _data, int seed = 1);
 
 	// Feeds a single input through the nnet and outputs the prediction
-	matrix<double> feed_forward(std::vector<double> input);
+	matrix<double> feed_forward(matrix<double> input);
 	// Feeds a mini-batch through the nnet and outputs the predictions
 	matrix<double> feed_batch(matrix<double> input);
 

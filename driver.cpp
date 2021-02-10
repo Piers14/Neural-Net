@@ -26,13 +26,20 @@ int main(int argc, char* argv[])
 	neural_net test_nn(test_structure, test_relu, test_quad, 0.1);
 	test_nn.init(test_load, 100);
 
+	// Gets a batch
 	std::pair<matrix<double>, matrix<double>> batch_test = test_load.get_batch();
+	std::cout << "Output from batch: " << std::endl;
 	std::cout << test_nn.feed_batch(batch_test.first) << std::endl;
 
+	std::cout << "Batch deltas: " << std::endl;
 	for (int i = 0; i < 1; i++)
 	{
 		std::cout << test_nn.compute_batch_deltas(batch_test.second)[i] << std::endl;
 	}
+
+	std::cout << "Testing single inputs: " << std::endl;
+	std::cout << test_nn.feed_forward(batch_test.first.sub_rows({0})) << std::endl;
+	std::cout << test_nn.compute_deltas(batch_test.second.sub_rows({ 0 }))[0];
 
 	
 	
