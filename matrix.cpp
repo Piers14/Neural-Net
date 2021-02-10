@@ -356,4 +356,35 @@ unsigned matrix<T>::get_cols() const {
     return this->cols;
 }
 
+template<typename T>
+matrix<double> matrix<T>::row_means()
+{
+    matrix<double> output(this->get_rows(), 1, 0);
+    for (unsigned i = 0; i < this->get_rows(); i++)
+    {
+        for (unsigned j = 0; j < this->get_cols(); j++)
+        {
+            output(i, 0) += this->mat[i][j];
+        }
+    }
+    output = output / this->get_cols();
+    return output;
+}
+
+template<typename T>
+matrix<double> matrix<T>::col_means()
+{
+    matrix<double> output(1, this->get_cols(), 0);
+    for (unsigned i = 0; i < this->get_cols(); i++)
+    {
+        for (unsigned j = 0; j < this->get_rows(); j++)
+        {
+            output(0, i) += this->mat[j][i];
+        }
+    }
+    output = output / this->get_rows();
+    return output;
+}
+
+
 #endif

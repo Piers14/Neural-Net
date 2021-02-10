@@ -40,8 +40,6 @@ int main(int argc, char* argv[])
 	std::cout << "Testing single inputs: " << std::endl;
 	std::cout << test_nn.feed_forward(batch_test.first.sub_rows({0})) << std::endl;
 	std::cout << test_nn.compute_deltas(batch_test.second.sub_rows({ 0 }))[0];
-
-	
 	
 	/*
 	// Example data

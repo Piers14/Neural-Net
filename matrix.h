@@ -61,6 +61,10 @@ public:
 	unsigned get_rows() const;
 	unsigned get_cols() const;
 
+	// Column and row means: only for type double
+	matrix<double> row_means();
+	matrix<double> col_means();
+
 };
 
 #include "matrix.cpp"
