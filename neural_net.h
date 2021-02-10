@@ -34,6 +34,7 @@ private:
 	std::vector<matrix<double>> final_batch_pre_activations;
 
 	matrix<double> current_input;
+	matrix<double> current_batch;
 
 	data_loader* data;
 
@@ -54,8 +55,10 @@ public:
 	// Computes the "deltas" for a mini-batch
 	std::vector<matrix<double>> compute_batch_deltas(matrix<double> true_values);
 
+	void average_batch_deltas();
+
 	void update_weights();
-	void back_prop(matrix<double> true_value);
+	void back_prop(matrix<double> true_values);
 
 	void train(int epochs);
 

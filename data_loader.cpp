@@ -242,3 +242,13 @@ int data_loader::get_train_size() const
     return num_train;
 }
 
+matrix<double> data_loader::get_train_y() const
+{
+    return train_y;
+}
+
+matrix<double> data_loader::get_train_x() const
+{
+    return train_x;
+}
+

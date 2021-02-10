@@ -7,7 +7,7 @@
 int main(int argc, char* argv[])
 {
 	// Data loader
-	data_loader test_load("test.csv", 4, 0.0);
+	data_loader test_load("test.csv", 3, 0.0);
 	std::cout << "Example batch: " << std::endl;
 	test_load.show_batch();
 	std::cout << std::endl << std::endl;
@@ -21,26 +21,27 @@ int main(int argc, char* argv[])
 	// Quadratic loss function
 	quadratic_loss test_quad;
 	// Structure: 3 input, 1 output
-	std::vector<int> test_structure = { 3, 1 };
+	std::vector<int> test_structure = { 3, 20,  1 };
 	// Define and initialise the neural network
-	neural_net test_nn(test_structure, test_relu, test_quad, 0.1);
+	neural_net test_nn(test_structure, test_relu, test_quad, 0.02);
 	test_nn.init(test_load, 100);
 
 	// Gets a batch
+	/*
 	std::pair<matrix<double>, matrix<double>> batch_test = test_load.get_batch();
 	std::cout << "Output from batch: " << std::endl;
 	std::cout << test_nn.feed_batch(batch_test.first) << std::endl;
+	test_nn.back_prop(batch_test.second);
+	*/
 
-	std::cout << "Batch deltas: " << std::endl;
-	for (int i = 0; i < 1; i++)
-	{
-		std::cout << test_nn.compute_batch_deltas(batch_test.second)[i] << std::endl;
-	}
+	test_nn.train(50);
 
-	std::cout << "Testing single inputs: " << std::endl;
-	std::cout << test_nn.feed_forward(batch_test.first.sub_rows({0})) << std::endl;
-	std::cout << test_nn.compute_deltas(batch_test.second.sub_rows({ 0 }))[0];
-	
+	std::cout << "Predictions: " << std::endl;
+	std::cout << test_nn.feed_forward(test_load.get_train_x().sub_rows({3}));
+	std::cout << "Actual: " << std::endl;
+	std::cout << test_load.get_train_y().sub_rows({ 3 }) << std::endl;
+	std::cout << test_load.get_train_x().sub_rows({ 3 });
+
 	/*
 	// Example data
 	std::vector<double> test_input1 = { 1.0, 1.0, 0.0 };

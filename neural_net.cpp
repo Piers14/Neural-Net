@@ -102,7 +102,7 @@ matrix<double> neural_net::feed_forward(matrix<double> input)
 matrix<double> neural_net::feed_batch(matrix<double> input_batch)
 {
 	assert(input_batch.get_cols() == structure[0]);
-
+	current_batch = input_batch.transpose();
 	if (input_batch.get_rows() != data->get_batch_size())
 	{
 		// Case when smaller than ususal batch size
@@ -182,8 +182,17 @@ std::vector<matrix<double>> neural_net::compute_batch_deltas(matrix<double> true
 	}
 }
 
+void neural_net::average_batch_deltas()
+{
+	for (int i = 0; i < num_layers - 1; i++)
+	{
+		//errors[i] = batch_errors[i].row_means();
+	}
+}
+
 void neural_net::update_weights()
 {
+	/*
 	bias[0] -= errors[0] * learn_rate;
 	weights[0] -=  errors[0] * (current_input * learn_rate).transpose();
 	
@@ -192,26 +201,37 @@ void neural_net::update_weights()
 		bias[i] -= errors[i] * learn_rate;
 		weights[i] -= errors[i] * (activations[i - 1] * learn_rate).transpose();
 	}
+	*/
+
+	bias[0] -= batch_errors[0].row_means() * learn_rate;
+	weights[0] -= batch_errors[0] * (current_batch * (learn_rate / batch_errors[0].get_cols())).transpose();
+
+	for (int i = 1; i < num_layers - 1; i++)
+	{
+		bias[i] -= batch_errors[i].row_means() * learn_rate;
+		weights[i] -= batch_errors[i] * (batch_activations[i - 1] * (learn_rate / batch_errors[i].get_cols())).transpose();
+	}
 }
 
-void neural_net::back_prop(matrix<double> true_value)
+void neural_net::back_prop(matrix<double> true_values)
 {
-	compute_deltas(true_value);
+	compute_batch_deltas(true_values);
+	average_batch_deltas();
 	update_weights();
 }
 
 void neural_net::train(int epochs)
 {
-	// not yet defined
-	/*
+	
 	for (int i = 0; i < epochs; i++)
 	{
-		for (unsigned j = 0; j < x.size(); j++)
+		for (int j = 0; j < data->num_batches; j++)
 		{
-			feed_forward(x[j]);
-			back_prop(y[j]);
+			std::pair<matrix<double>, matrix<double>> next_batch = data->get_batch();
+			feed_batch(next_batch.first);
+			back_prop(next_batch.second);
 		}
-		learn_rate *= 1.0;
+		
 	}
-	*/
+	
 }

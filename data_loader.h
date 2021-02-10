@@ -58,6 +58,10 @@ public:
 
 	int get_train_size() const;
 
+	matrix<double> get_train_x() const;
+
+	matrix<double> get_train_y() const;
+
 	friend class neural_net;
 };
 
